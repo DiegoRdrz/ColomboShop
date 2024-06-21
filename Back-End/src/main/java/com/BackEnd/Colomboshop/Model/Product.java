@@ -9,6 +9,7 @@ public class Product {
 
     @Id
     private String productID;
+    private String userID;
     private String categoryID;
     private String nameProduct;
     private String description;

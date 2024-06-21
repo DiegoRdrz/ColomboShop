@@ -16,11 +16,11 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username).orElseThrow();
+        return userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
-
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -35,13 +35,12 @@ public class UserService implements UserDetailsService {
     }
 
     public User updateUser(String id, User user) {
-        user.setId(id); // Asegurar que el ID esté establecido correctamente
+        user.setId(id);
         return userRepository.save(user);
     }
 
     public void deleteUser(String id) {
         userRepository.deleteById(id);
     }
-
-
 }
+

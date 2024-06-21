@@ -31,8 +31,23 @@ public class ProductController {
         return convertToDto(product);
     }
 
+    @GetMapping("/category/{categoryID}")
+    public List<Product> getProductsByCategory(@PathVariable String categoryID) {
+        return productService.getProductsByCategory(categoryID);
+    }
+
+    @GetMapping("/search/{name}")
+    public List<Product> searchProductsByName(@RequestParam String name) {
+        return productService.filterProductsByString(name);
+    }
+
+    @GetMapping("/price")
+    public List<Product> getProductsByPriceRange(@RequestParam double minPrice, @RequestParam double maxPrice) {
+        return productService.getProductsByPriceRange(minPrice, maxPrice);
+    }
+
     @PostMapping
-    public ProductDTO createProduct(@RequestBody ProductDTO productDTO) {
+    public ProductDTO createProduct(@RequestBody ProductDTO productDTO) throws Exception {
         Product product = convertToEntity(productDTO);
         Product createdProduct = productService.createProduct(product);
         return convertToDto(createdProduct);

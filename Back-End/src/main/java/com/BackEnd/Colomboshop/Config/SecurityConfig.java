@@ -3,6 +3,7 @@ package com.BackEnd.Colomboshop.Config;
 
 import com.BackEnd.Colomboshop.Auth.JWTAuthFilter;
 import com.BackEnd.Colomboshop.Service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     @Autowired
@@ -32,15 +34,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request.requestMatchers("/colomboShop/auth/**","/colomboShop/public/**").permitAll()
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/colomboShop/auth/**","/colomboShop/public/**").permitAll()
                         .requestMatchers("/colomboShop/user/**").hasAnyAuthority("USER", "SELLER", "ADMIN")
                         .requestMatchers("/colomboShop/seller/**").hasAnyAuthority("SELLER", "ADMIN")
-                        .requestMatchers("/colomboShop/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/colomboShop/admin/**").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated())
-                .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider()).addFilterBefore(
-                        jwtAuthFilter, UsernamePasswordAuthenticationFilter.class
-                );
+                .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
@@ -57,10 +59,9 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
-    public  AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws  Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
         return authenticationConfiguration.getAuthenticationManager();
     }
-
 }
+

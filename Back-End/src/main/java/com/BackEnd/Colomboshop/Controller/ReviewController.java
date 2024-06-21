@@ -36,9 +36,9 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<ReviewDTO> createReview(@RequestBody ReviewDTO reviewDTO) {
+    public ResponseEntity<ReviewDTO> createReview(@RequestBody ReviewDTO reviewDTO) throws Exception {
         Review review = convertToEntity(reviewDTO);
-        Review createdReview = reviewService.createReview(review);
+        Review createdReview = reviewService.createReview (review);
         return ResponseEntity.status(HttpStatus.CREATED).body(convertToDto(createdReview));
     }
 

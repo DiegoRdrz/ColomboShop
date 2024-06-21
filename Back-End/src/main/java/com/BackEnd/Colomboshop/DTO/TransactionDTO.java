@@ -11,7 +11,7 @@ public class TransactionDTO {
     private String userID;
     private String sellerID;
     private Map<String,Object> userPaymentMethod;
-    private Map<String,Object> sellerPaymentMethod;
+    private Map<String,Object> sellerPaymentReceiptMethod;
     private double amount;
     private Date date;
 }

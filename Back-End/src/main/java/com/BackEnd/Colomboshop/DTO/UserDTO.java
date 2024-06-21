@@ -14,4 +14,6 @@ public class UserDTO {
     private String role;
     private String address;
     private Map<String, Object> paymentMethods;
+    private Map<String, Object> paymentReceiptMethod;
+
 }
