@@ -1,6 +1,5 @@
 package com.BackEnd.Colomboshop.Config;
 
-
 import com.BackEnd.Colomboshop.Auth.JWTAuthFilter;
 import com.BackEnd.Colomboshop.Service.UserService;
 import lombok.RequiredArgsConstructor;
